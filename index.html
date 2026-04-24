@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yasser KHATTACH — Artist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #0d0d0d;
+      --graphite: #1a1a1a;
+      --charcoal: #2c2c2c;
+      --ash: #4a4a4a;
+      --dust: #8a8a8a;
+      --paper: #f0ece4;
+      --cream: #faf8f3;
+      --white: #ffffff;
+      --accent: #c8b89a;
+      --accent-dark: #9a8870;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+      mix-blend-mode: difference;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.2s ease;
+      opacity: 0.5;
+    }
+
+    body:hover .cursor {
+      opacity: 1;
+    }
+
+    /* ========== NOISE OVERLAY ========== */
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ========== NAV ========== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: 28px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      mix-blend-mode: normal;
+    }
+
+    nav::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(13, 13, 13, 0.9) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--paper);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--dust);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--paper);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* Animated pencil sketch lines in the background */
+    .sketch-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .sketch-lines svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .sketch-line {
+      stroke: var(--charcoal);
+      stroke-width: 1;
+      fill: none;
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: drawLine 3s ease forwards;
+    }
+
+    .sketch-line:nth-child(2) {
+      animation-delay: 0.3s;
+      stroke-width: 0.5;
+    }
+
+    .sketch-line:nth-child(3) {
+      animation-delay: 0.6s;
+      stroke-width: 0.8;
+    }
+
+    .sketch-line:nth-child(4) {
+      animation-delay: 0.9s;
+      stroke-width: 0.3;
+    }
+
+    .sketch-line:nth-child(5) {
+      animation-delay: 1.2s;
+    }
+
+    .sketch-line:nth-child(6) {
+      animation-delay: 1.5s;
+      stroke-width: 0.6;
+    }
+
+    @keyframes drawLine {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Big circle accent */
+    .hero-circle {
+      position: absolute;
+      right: -120px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 600px;
+      height: 600px;
+      border: 1px solid var(--charcoal);
+      border-radius: 50%;
+      opacity: 0;
+      animation: fadeInCircle 2s 0.5s ease forwards;
+    }
+
+    .hero-circle::before {
+      content: '';
+      position: absolute;
+      inset: 40px;
+      border: 1px solid var(--charcoal);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    @keyframes fadeInCircle {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Portrait placeholder */
+    .hero-portrait {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 1.2s 0.8s ease forwards;
+    }
+
+    .portrait-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--graphite);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      border: 1px solid var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portrait-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, var(--charcoal) 100%);
+    }
+
+    .portrait-icon {
+      font-size: 64px;
+      opacity: 0.2;
+    }
+
+    .portrait-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--dust);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s ease forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: var(--dust);
+      margin-top: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s ease forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dust);
+      opacity: 0;
+      animation: fadeIn 1s 2s ease forwards;
+    }
+
+    .hero-scroll-line {
+      width: 60px;
+      height: 1px;
+      background: var(--ash);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-scroll-line::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      animation: slideLine 2s 2s ease infinite;
+    }
+
+    @keyframes slideLine {
+      0% {
+        left: -100%;
+      }
+
+      50% {
+        left: 0%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* ========== SECTION BASE ========== */
+    section {
+      padding: 120px 60px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 80px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--charcoal);
+    }
+
+    .section-number {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ========== ABOUT ========== */
+    #about {
+      background: var(--graphite);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--paper);
+      margin-bottom: 28px;
+    }
+
+    .about-text p em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .about-quote {
+      border-left: 2px solid var(--accent);
+      padding-left: 28px;
+      margin: 48px 0;
+    }
+
+    .about-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-style: italic;
+      color: var(--paper);
+      line-height: 1.5;
+    }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .stat-item {
+      padding: 32px;
+      border: 1px solid var(--charcoal);
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .stat-item:hover {
+      border-color: var(--accent);
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .stat-item:hover::before {
+      width: 100%;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dust);
+      margin-top: 8px;
+    }
+
+    /* ========== PHILOSOPHY ========== */
+    #philosophy {
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .philosophy-bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 220px;
+      font-weight: 900;
+      color: var(--graphite);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.05em;
+    }
+
+    .philosophy-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .phil-card {
+      background: var(--graphite);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+
+    .phil-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .phil-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      background: linear-gradient(to top, var(--charcoal), transparent);
+      transition: height 0.4s ease;
+    }
+
+    .phil-card:hover::before {
+      height: 100%;
+    }
+
+    .phil-icon {
+      font-size: 32px;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .phil-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .phil-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--dust);
+      position: relative;
+    }
+
+    /* ========== GALLERY ========== */
+    #work {
+      background: var(--graphite);
+    }
+
+    .gallery-filter {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 60px;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--charcoal);
+      color: var(--dust);
+      padding: 10px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--ink);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .gallery-item {
+      background: var(--charcoal);
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+      transition: opacity 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      aspect-ratio: 1 / 1;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 13, 13, 0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .gallery-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .gallery-item-type {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* Art placeholder visuals */
+    .art-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .art-placeholder svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .art-label {
+      position: relative;
+      z-index: 1;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--ash);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ========== PROCESS ========== */
+    #process {
+      background: var(--ink);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 60px;
+      border: 1px solid var(--charcoal);
+    }
+
+    .process-step {
+      padding: 48px 36px;
+      border-right: 1px solid var(--charcoal);
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .process-step:last-child {
+      border-right: none;
+    }
+
+    .process-step:hover {
+      background: var(--graphite);
+    }
+
+    .step-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 80px;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1;
+      margin-bottom: 24px;
+      transition: color 0.3s;
+    }
+
+    .process-step:hover .step-number {
+      color: var(--accent);
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .step-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--dust);
+    }
+
+    /* ========== CONTACT ========== */
+    #contact {
+      background: var(--graphite);
+      text-align: center;
+    }
+
+    .contact-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .contact-big {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 8vw, 110px);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 48px;
+    }
+
+    .contact-big span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .contact-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--dust);
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: none;
+      border: 1px solid var(--charcoal);
+      color: var(--paper);
+      padding: 16px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: none;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .contact-link:hover {
+      background: var(--paper);
+      border-color: var(--paper);
+      color: var(--ink);
+    }
+
+    .contact-link.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--ink);
+    }
+
+    .contact-link.primary:hover {
+      background: var(--paper);
+      border-color: var(--paper);
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: var(--ink);
+      padding: 32px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--charcoal);
+    }
+
+    .footer-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--dust);
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--ash);
+      letter-spacing: 0.1em;
+    }
+
+    /* ========== SCROLL REVEAL ========== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+
+      nav,
+      section,
+      footer {
+        padding-left: 28px;
+        padding-right: 28px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .philosophy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-portrait {
+        display: none;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .contact-links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* ========== LIGHTBOX ========== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(13, 13, 13, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .lightbox.active .lightbox-content {
+      transform: scale(1);
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 85vh;
+      display: block;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--charcoal);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: var(--paper);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* Update gallery item cursor and transition */
+    .gallery-item,
+    .hero-portrait {
+      cursor: none;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .gallery-item:hover {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="noise"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Y<span>.</span>K</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg">
+      <div class="sketch-lines">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+          <path class="sketch-line" d="M 0 200 Q 300 100 600 250 T 1200 200 T 1800 250" />
+          <path class="sketch-line" d="M -100 500 Q 400 350 800 500 T 1600 480" />
+          <path class="sketch-line" d="M 100 700 Q 500 600 900 700 T 1500 680" />
+          <path class="sketch-line" d="M 200 350 Q 600 250 1000 380 T 1600 320" />
+          <path class="sketch-line" d="M 0 620 Q 350 520 700 640 T 1400 600" />
+          <circle class="sketch-line" cx="900" cy="450" r="300" />
+        </svg>
+      </div>
+      <div class="hero-circle"></div>
+    </div>
+
+    <div class="hero-portrait">
+      <div class="portrait-placeholder">
+        <img src="img/profile.jpg" alt="Yasser Khattach" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-tag">✦ Pencil · Digital · Expression</p>
+      <h1 class="hero-name">Yasser<br><em>Khattach</em></h1>
+      <p class="hero-sub">Artist · Self-taught · 22 years of seeing differently</p>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scroll
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-number">01 / 04</p>
+        <h2 class="section-title">The <em>Artist</em></h2>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I am <em>Yasser Khattach</em>, a 22-year-old self-taught artist who has been drawing since childhood — not
+          because someone taught me, but because creating felt like breathing.</p>
+        <p>Art, for me, is not decoration. It is the language I use when words collapse. Every line I draw carries an
+          <em>emotion too wild to be named</em>, only shaped — described by visuals, lines, and the weight of graphite
+          on paper.
+        </p>
+        <div class="about-quote">
+          <p>"Limitations don't cage creativity — they force it to go deeper."</p>
+        </div>
+        <p>I work primarily in <em>black and white</em>. Pencil. No color. Because when you strip away color, you must
+          master everything else — shape, shadow, contrast, texture. A red rose in pencil isn't obvious. It demands
+          mastery of every detail until it speaks for itself.</p>
+      </div>
+      <div class="about-stats reveal reveal-delay-2">
+        <div class="stat-item">
+          <div class="stat-number">22</div>
+          <div class="stat-label">Years of age, a lifetime of drawing</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Self-taught since childhood</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Disciplines — Pencil & Digital</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">B&W</div>
+          <div class="stat-label">Preferred palette — less is more</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="philosophy-bg-text">ART</div>
+    <div class="philosophy-content">
+      <div class="section-header reveal">
+        <div>
+          <p class="section-number">02 / 04</p>
+          <h2 class="section-title">The <em>Philosophy</em></h2>
+        </div>
+      </div>
+      <div class="philosophy-grid">
+        <div class="phil-card reveal">
+          <span class="phil-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="1" ry="1"></rect>
+              <path d="M3 3l18 18M3 21L21 3" />
+            </svg>
+          </span>
+          <h3 class="phil-title">Constraint as Freedom</h3>
+          <p class="phil-text">Choosing only black and white isn't a limitation — it's a liberation. Without color,
+            every shadow, every edge, every grain of graphite becomes a decision. That's where real creativity lives.
+          </p>
+        </div>
+        <div class="phil-card reveal reveal-delay-1">
+          <span class="phil-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </span>
+          <h3 class="phil-title">Expression Over Imitation</h3>
+          <p class="phil-text">I don't draw what the eye sees. I draw what the chest feels. Art is my translation of the
+            interior world — the part that has no vocabulary in any spoken language.</p>
+        </div>
+        <div class="phil-card reveal reveal-delay-2">
+          <span class="phil-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
+              <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10z" fill="var(--accent)" fill-opacity="0.2"></path>
+            </svg>
+          </span>
+          <h3 class="phil-title">Depth Through Darkness</h3>
+          <p class="phil-text">Shadow defines form. In the absence of light is where the shape truly reveals itself. I
+            am drawn to darkness not from sadness, but because that's where detail hides.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / GALLERY -->
+  <section id="work">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-number">03 / 04</p>
+        <h2 class="section-title">The <em>Work</em></h2>
+      </div>
+    </div>
+    <div class="gallery-filter reveal">
+      <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
+      <button class="filter-btn" onclick="filterGallery('pencil', this)">Pencil</button>
+      <button class="filter-btn" onclick="filterGallery('digital', this)">Digital</button>
+    </div>
+    <div class="gallery-grid" id="gallery">
+
+      <div class="gallery-item" data-type="digital">
+        <img src="img/1.jpg" alt="Eclipse" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Eclipse</div>
+          <div class="gallery-item-type">Digital · 2024</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="digital">
+        <img src="img/2.jpg" alt="Genie Eyes" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Genie Eyes</div>
+          <div class="gallery-item-type">Digital · 2024</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/3.jpg" alt="Hands of an Angel" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Hands of an Angel</div>
+          <div class="gallery-item-type">Pencil · 2024</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/4.jpg" alt="Red String" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Red String</div>
+          <div class="gallery-item-type">Pencil · 2023</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/5.jpg" alt="Knitting Heart" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Knitting Heart</div>
+          <div class="gallery-item-type">Pencil · 2023</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/6.jpg" alt="Connected" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Connected</div>
+          <div class="gallery-item-type">Pencil · 2023</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/7.jpg" alt="Eye" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Eye</div>
+          <div class="gallery-item-type">Pencil · 2022</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/8.jpg" alt="Effect" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Effect</div>
+          <div class="gallery-item-type">Pencil · 2023</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/9.jpg" alt="Sunflower" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Sunflower</div>
+          <div class="gallery-item-type">Pencil · 2025</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/10.jpg" alt="Defeated" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Defeated</div>
+          <div class="gallery-item-type">Pencil · 2022</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/11.jpg" alt="Knight" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Knight</div>
+          <div class="gallery-item-type">Pencil · 2026</div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-type="pencil">
+        <img src="img/12.jpg" alt="Night" style="width:100%; height:100%; object-fit:cover;">
+        <div class="gallery-overlay">
+          <div class="gallery-item-title">Night</div>
+          <div class="gallery-item-type">Pencil · 2026</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-header reveal">
+      <div>
+        <p class="section-number">04 / 04</p>
+        <h2 class="section-title">The <em>Process</em></h2>
+      </div>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-number">01</div>
+        <h3 class="step-title">Feel First</h3>
+        <p class="step-text">Every piece starts with an emotion I can't put into words. I sit with it — sometimes for
+          days — until it becomes a shape in my mind.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-number">02</div>
+        <h3 class="step-title">Sketch the Bones</h3>
+        <p class="step-text">Light, quick strokes. No commitment yet. Just letting the hand find the form that the
+          feeling wants to take. Loose, exploratory, honest.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-number">03</div>
+        <h3 class="step-title">Build the Shadow</h3>
+        <p class="step-text">Darkness is where the detail lives. Layer by layer, I build shade and form until the
+          subject begins to breathe on its own within the constraints of black and white.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-number">04</div>
+        <h3 class="step-title">Know When to Stop</h3>
+        <p class="step-text">Over-working kills a drawing. There's a moment when the piece tells you it's done. Learning
+          to hear that moment is the hardest and most important skill.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <h2 class="contact-big reveal">
+        Let's
+        <span>Connect</span>
+      </h2>
+      <p class="contact-text reveal">Have a project, collaboration, or just want to talk about art and creation? I'd
+        love to hear from you.</p>
+      <div class="contact-links reveal">
+        <a href="mailto:yasser.khattach@gmail.com" class="contact-link primary">✉ Send a Message</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-name">Yasser KHATTACH — Artist</p>
+    <p class="footer-copy">© 2026 · Pencil & Pixels</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-close">Click anywhere to close</div>
+    <div class="lightbox-content">
+      <img src="" alt="" class="lightbox-img" id="lightboxImg">
+    </div>
+  </div>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .gallery-item, .stat-item, .phil-card, .process-step').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '16px';
+        cursor.style.height = '16px';
+        ring.style.width = '56px';
+        ring.style.height = '56px';
+        ring.style.opacity = '0.8';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '8px';
+        cursor.style.height = '8px';
+        ring.style.width = '36px';
+        ring.style.height = '36px';
+        ring.style.opacity = '0.5';
+      });
+    });
+
+    // Gallery filter
+    function filterGallery(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        if (type === 'all' || item.dataset.type === type) {
+          item.style.opacity = '1';
+          item.style.pointerEvents = 'auto';
+        } else {
+          item.style.opacity = '0.15';
+          item.style.pointerEvents = 'none';
+        }
+      });
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Parallax on hero sketch lines
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      const circle = document.querySelector('.hero-circle');
+      if (circle) {
+        circle.style.transform = `translateY(calc(-50% + ${y}px)) translateX(${x}px)`;
+      }
+    });
+
+    // Animated counter for stats
+    const counters = document.querySelectorAll('.stat-number');
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const val = el.textContent;
+          if (!isNaN(parseInt(val))) {
+            const target = parseInt(val);
+            let current = 0;
+            const step = target / 30;
+            const interval = setInterval(() => {
+              current += step;
+              if (current >= target) { el.textContent = val; clearInterval(interval); }
+              else el.textContent = Math.floor(current);
+            }, 40);
+          }
+          counterObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObs.observe(c));
+
+    // Lightbox Logic
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.style.display = 'flex';
+      setTimeout(() => {
+        lightbox.classList.add('active');
+      }, 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        lightbox.style.display = 'none';
+        lightboxImg.src = '';
+      }, 400);
+    }
+
+    document.querySelectorAll('.gallery-item, .hero-portrait').forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        if (img) openLightbox(img.src);
+      });
+    });
+
+    lightbox.addEventListener('click', closeLightbox);
+  </script>
+</body>
+
+</html>
